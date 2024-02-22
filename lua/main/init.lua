@@ -1,4 +1,4 @@
--- Plug
+--Plug
 vim.cmd([[
 call plug#begin()
 
@@ -21,6 +21,9 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#show_splits = 1
 Plug 'vim-airline/vim-airline-themes'
 let g:airline_theme = 'distinguished'
+
+" nvim-web-devicons
+Plug 'nvim-tree/nvim-web-devicons'
 
 " Nerd comments
 Plug 'scrooloose/nerdcommenter'
@@ -121,6 +124,26 @@ vim.keymap.set("n", "<leader>p", "\"+p", {noremap = true})
 -- Exit terminal input mode
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", {noremap = true})
 
+-- Telescope file browser
+require("telescope").setup {
+  extensions = {
+    file_browser = {
+      -- theme = "ivy",
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+          -- your custom insert mode mappings
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+        },
+      },
+    },
+  },
+}
+
+
 -- Find files and grep files
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -129,7 +152,7 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fm', builtin.marks, {})
 vim.keymap.set('n', '<leader>fr', builtin.registers, {})
--- vim.keymap.set('n', '<leader>fd', ":Telescope file_browser<CR>", {noremap = true})
+vim.keymap.set('n', '<leader>fd', ":Telescope file_browser<CR>", {noremap = true})
 
 -- Window zoom
 vim.keymap.set("n", "<C-w>z", vim.cmd.ZoomWinTabToggle, {noremap = true})
@@ -171,11 +194,17 @@ require'lspconfig'.pylsp.setup{
         },
         pyflakes = {
           enabled = false
+        },
+        black = {
+          enabled = true,
+          lineLength = 120
         }
       }
     }
   }
 }
+-- Formatting keymap
+vim.keymap.set('n', '<leader>df', ': lua vim.lsp.buf.format()<CR>', {noremap = true})
 
 -- Golang lsp
 require'lspconfig'.gopls.setup{}
