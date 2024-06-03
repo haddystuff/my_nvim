@@ -13,13 +13,13 @@ pyright
 flake8
 gopls
 ansible-lint
-nerd-devicons
 python-black
 ```
 for example in Ubuntu you will need to run:
-```sudo apt-get install python3-pylsp  flake8 gopls ansible-lint python3-pylsp-black black```
+```sudo apt-get install python3-pylsp flake8 gopls ansible-lint python3-pylsp-black black```
 
-2. Install Nerd fonts
+2. Install powerline fonts
+```sudo apt-get install fonts-powerline```
 
 3. Install vim Plug
 

@@ -15,11 +15,11 @@ Plug 'ryanoasis/vim-devicons'
 
 " Airline
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#show_splits = 1
-Plug 'vim-airline/vim-airline-themes'
 let g:airline_theme = 'distinguished'
 
 " nvim-web-devicons
@@ -31,12 +31,20 @@ let g:NERDCreateDefaultMappings = 1
 let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 
+" Comment.nvim
+Plug 'numToStr/Comment.nvim'
+
+" Bufdelete
+Plug 'moll/vim-bbye'
 
 " Scrollbar
 Plug 'petertriho/nvim-scrollbar'
 
+" nvim-tree
+Plug 'nvim-tree/nvim-tree.lua'
+
 " Nerdtree
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 
 " Make yank highlighted
 Plug 'machakann/vim-highlightedyank'
@@ -60,7 +68,7 @@ Plug 'EdenEast/nightfox.nvim'
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-file-browser.nvim'
+" Plug 'nvim-telescope/telescope-file-browser.nvim'
 
 " Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -125,23 +133,23 @@ vim.keymap.set("n", "<leader>p", "\"+p", {noremap = true})
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", {noremap = true})
 
 -- Telescope file browser
-require("telescope").setup {
-  extensions = {
-    file_browser = {
-      -- theme = "ivy",
-      -- disables netrw and use telescope-file-browser in its place
-      hijack_netrw = true,
-      mappings = {
-        ["i"] = {
-          -- your custom insert mode mappings
-        },
-        ["n"] = {
-          -- your custom normal mode mappings
-        },
-      },
-    },
-  },
-}
+-- require("telescope").setup {
+--   extensions = {
+--     file_browser = {
+--       -- theme = "ivy",
+--       -- disables netrw and use telescope-file-browser in its place
+--       hijack_netrw = true,
+--       mappings = {
+--         ["i"] = {
+--           -- your custom insert mode mappings
+--         },
+--         ["n"] = {
+--           -- your custom normal mode mappings
+--         },
+--       },
+--     },
+--   },
+-- }
 
 
 -- Find files and grep files
@@ -152,19 +160,20 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fm', builtin.marks, {})
 vim.keymap.set('n', '<leader>fr', builtin.registers, {})
-vim.keymap.set('n', '<leader>fd', ":Telescope file_browser<CR>", {noremap = true})
+-- vim.keymap.set('n', '<leader>fd', ":Telescope file_browser<CR>", {noremap = true})
 
 -- Window zoom
 vim.keymap.set("n", "<C-w>z", vim.cmd.ZoomWinTabToggle, {noremap = true})
 
 
 -- NERDTree
-vim.keymap.set("n", "<leader>b", vim.cmd.NERDTreeToggle)
+-- vim.keymap.set("n", "<leader>b", vim.cmd.NERDTreeToggle)
+vim.keymap.set("n", "<leader>b", vim.cmd.NvimTreeToggle)
 
 -- Buffer switching
 vim.keymap.set("n", "<C-h>", vim.cmd.bprev)
 vim.keymap.set("n", "<C-l>", vim.cmd.bnext)
-vim.keymap.set("n", "<C-q>", vim.cmd.bdelete)
+vim.keymap.set("n", "<C-q>", vim.cmd.Bdelete)
 
 -- LSP config
 local lsp_zero = require('lsp-zero')
@@ -265,31 +274,6 @@ require("toggleterm").setup{
  start_in_insert = true,
 }
 
--- -- nvim-tree
--- require'nvim-tree'.setup {
---   disable_netrw       = true,
---   hijack_netrw        = true,
---   open_on_tab         = false,
---   hijack_cursor       = false,
---   update_cwd          = false,
---   update_focused_file = {
---     enable      = true,
---     update_cwd  = false,
---     ignore_list = {}
---   },
---   system_open = {
---     cmd  = nil,
---     args = {}
---   },
---   view = {
---     width = 30,
---     side = 'left',
---   },
---   filters = {
---     dotfiles = false,
---   },
--- }
-
 -- Git signs
 require('gitsigns').setup()
 
@@ -305,3 +289,10 @@ require("scrollbar").setup()
 
 -- nvim-surround
 require("nvim-surround").setup({})
+
+-- empty setup using defaults
+require("nvim-tree").setup()
+
+-- Comment.nvim
+require('Comment').setup()
+
