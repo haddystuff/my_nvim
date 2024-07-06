@@ -21,6 +21,8 @@ for example in Ubuntu you will need to run:
 2. Install powerline fonts
 ```sudo apt-get install fonts-powerline```
 
-3. Install vim Plug
+3. Install Nerdfonts
 
-4. Coopilot config
+4. Install vim Plug
+
+5. Coopilot config

@@ -123,7 +123,7 @@ vim.g.mapleader = " "
 -- Copy to clipboard
 vim.keymap.set("v", "<leader>y", "\"+y", {noremap = true})
 vim.keymap.set("n", "<leader>y", "\"+y", {noremap = true})
-vim.keymap.set("v", "<leader>p", "\"+p", {noremap = true})
+vim.keymap.set("v", "<leader>p", "\"+P", {noremap = true})
 vim.keymap.set("n", "<leader>p", "\"+p", {noremap = true})
 
 -- Move between windows in terminal
@@ -291,7 +291,11 @@ require("scrollbar").setup()
 require("nvim-surround").setup({})
 
 -- empty setup using defaults
-require("nvim-tree").setup()
+require("nvim-tree").setup({
+  diagnostics = {
+    enable = true,
+  }
+})
 
 -- Comment.nvim
 require('Comment').setup()
