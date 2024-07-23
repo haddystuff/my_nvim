@@ -13,14 +13,8 @@ Plug 'VonHeikemen/lsp-zero.nvim', {'branch': 'v3.x'}
 " Vim devfonts
 Plug 'ryanoasis/vim-devicons'
 
-" Airline
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#show_splits = 1
-let g:airline_theme = 'distinguished'
+" lualine
+Plug 'nvim-lualine/lualine.nvim'
 
 " nvim-web-devicons
 Plug 'nvim-tree/nvim-web-devicons'
@@ -151,6 +145,16 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", {noremap = true})
 --   },
 -- }
 
+-- Lualine
+require('lualine').setup({
+  options = {
+    theme = 'nightfox',
+    section_separators = '',
+    component_separators = '',
+  },
+  sections = {
+    lualine_a = {'buffers', 'mode'}
+}})
 
 -- Find files and grep files
 local builtin = require('telescope.builtin')
@@ -299,4 +303,5 @@ require("nvim-tree").setup({
 
 -- Comment.nvim
 require('Comment').setup()
+
 
