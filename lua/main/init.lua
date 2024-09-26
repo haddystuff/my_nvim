@@ -11,7 +11,7 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'VonHeikemen/lsp-zero.nvim', {'branch': 'v3.x'}
 
 " Vim devfonts
-Plug 'ryanoasis/vim-devicons'
+" Plug 'ryanoasis/vim-devicons'
 
 " lualine
 Plug 'nvim-lualine/lualine.nvim'
@@ -37,11 +37,8 @@ Plug 'petertriho/nvim-scrollbar'
 " nvim-tree
 Plug 'nvim-tree/nvim-tree.lua'
 
-" Nerdtree
-"Plug 'scrooloose/nerdtree'
-
 " Make yank highlighted
-Plug 'machakann/vim-highlightedyank'
+" Plug 'machakann/vim-highlightedyank'
 
 " Zoom win
 Plug 'troydm/zoomwintab.vim'
@@ -53,16 +50,20 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
 " Black
-Plug 'psf/black', { 'branch': 'stable'}
-let g:black_linelength = 120
+" Plug 'psf/black', { 'branch': 'stable'}
+" let g:black_linelength = 120
 
-" Colortheme
-Plug 'EdenEast/nightfox.nvim'
+" Colorthemes
+" Plug 'EdenEast/nightfox.nvim'
+Plug 'Mofiqul/vscode.nvim'
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 " Plug 'nvim-telescope/telescope-file-browser.nvim'
+
+" Harpoon
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 
 " Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -72,7 +73,7 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'pearofducks/ansible-vim'
 
 " Marks
-Plug 'chentoast/marks.nvim'
+" Plug 'chentoast/marks.nvim'
 
 " Github copilot
 Plug 'github/copilot.vim'
@@ -81,10 +82,20 @@ Plug 'github/copilot.vim'
 Plug 'kylechui/nvim-surround'
 
 " Toggle terminal
-Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+" Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 
 call plug#end()
 ]])
+
+-- Yank highlight
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = vim.api.nvim_create_augroup('highlight_yank', {}),
+  desc = 'Hightlight selection on yank',
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank { higroup = 'IncSearch', timeout = 500 }
+  end,
+})
 
 -- Set notimeout
 vim.g.notimeout = true
@@ -111,6 +122,10 @@ vim.opt.hlsearch = true
 -- Set mapleader
 vim.g.mapleader = " "
 
+-- Set scroll
+vim.opt.scroll = 12
+vim.opt.scrolloff = 6
+
 -- Set ex mapping
 -- vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
 
@@ -127,34 +142,34 @@ vim.keymap.set("n", "<leader>p", "\"+p", {noremap = true})
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", {noremap = true})
 
 -- Telescope file browser
--- require("telescope").setup {
---   extensions = {
---     file_browser = {
---       -- theme = "ivy",
---       -- disables netrw and use telescope-file-browser in its place
---       hijack_netrw = true,
---       mappings = {
---         ["i"] = {
---           -- your custom insert mode mappings
---         },
---         ["n"] = {
---           -- your custom normal mode mappings
---         },
---       },
---     },
---   },
--- }
+require("telescope").setup {
+  pickers = {
+    find_files = {
+      hidden = true,
+      no_ignore = true,
+      no_ingore_parent = true
+    },
+    grep_string = {
+      additional_args = {"--hidden", "--no-ignore", "-i", "-g", "!.git"}
+    },
+    live_grep = {
+      additional_args = {"--hidden", "--no-ignore", "-i", "-g", "!.git"}
+    },
+  },
+}
 
 -- Lualine
 require('lualine').setup({
   options = {
-    theme = 'nightfox',
+    theme = 'vscode',
     section_separators = '',
     component_separators = '',
+    disabled_filetypes = {'NvimTree', 'packer', 'toggleterm', 'help'},
   },
   sections = {
-    lualine_a = {'buffers', 'mode'}
-}})
+    lualine_c = {'filename'},
+  }
+})
 
 -- Find files and grep files
 local builtin = require('telescope.builtin')
@@ -164,6 +179,7 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fm', builtin.marks, {})
 vim.keymap.set('n', '<leader>fr', builtin.registers, {})
+vim.keymap.set('n', '<leader>fj', builtin.jumplist, {})
 -- vim.keymap.set('n', '<leader>fd', ":Telescope file_browser<CR>", {noremap = true})
 
 -- Window zoom
@@ -175,8 +191,8 @@ vim.keymap.set("n", "<C-w>z", vim.cmd.ZoomWinTabToggle, {noremap = true})
 vim.keymap.set("n", "<leader>b", vim.cmd.NvimTreeToggle)
 
 -- Buffer switching
-vim.keymap.set("n", "<C-h>", vim.cmd.bprev)
-vim.keymap.set("n", "<C-l>", vim.cmd.bnext)
+-- vim.keymap.set("n", "<C-h>", vim.cmd.bprev)
+-- vim.keymap.set("n", "<C-l>", vim.cmd.bnext)
 vim.keymap.set("n", "<C-q>", vim.cmd.Bdelete)
 
 -- LSP config
@@ -249,7 +265,7 @@ require'lspconfig'.ansiblels.setup{
 -- Treesitter
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "python", "yaml", "bash", "lua", "json", "toml", "dockerfile", "html", "css", "go"},
+  ensure_installed = { "python", "yaml", "bash", "lua", "json", "toml", "dockerfile", "html", "css", "go", "markdown"},
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -271,12 +287,12 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- toggleterm setup
-require("toggleterm").setup{
- direction = "tab",
- open_mapping = [[<c-\>]],
- autochdir = true,
- start_in_insert = true,
-}
+-- require("toggleterm").setup{
+--  direction = "tab",
+--  open_mapping = [[<c-\>]],
+--  autochdir = true,
+--  start_in_insert = true,
+-- }
 
 -- Git signs
 require('gitsigns').setup()
@@ -285,7 +301,7 @@ require('gitsigns').setup()
 require("ibl").setup()
 
 -- colorscheme
-vim.cmd.colorscheme('carbonfox')
+vim.cmd.colorscheme('vscode')
 
 -- scrollbar
 require("scrollbar.handlers.gitsigns").setup()
@@ -298,10 +314,39 @@ require("nvim-surround").setup({})
 require("nvim-tree").setup({
   diagnostics = {
     enable = true,
+  },
+  modified = {
+    enable = true,
+  },
+  renderer = {
+    highlight_modified = all,
+  },
+  filters = {
+    enable = false,
+    dotfiles = false,
+    git_ignored = false,
+  },
+  update_focused_file = {
+    enable = true,
+    update_root = false,
   }
+
 })
 
 -- Comment.nvim
 require('Comment').setup()
 
+-- Harpoon
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
+vim.keymap.set("n", "<leader>hl", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set("n", "<C-h>", function() harpoon:list():prev() end)
+vim.keymap.set("n", "<C-l>", function() harpoon:list():next() end)
 
